@@ -7,20 +7,30 @@ spring:
             - id: product-service-route
               uri: http://localhost:8082
               predicates:
-                - Path=/products/**,/categories/**
+
+                - Path=/api/v1/products/**,/api/v1/categories/**
               filters:
+                - RewritePath=/api/v1/(?<segment>.*), /${segment}
                 - name: RequestRateLimiter
                   args:
                     key-resolver: "#{@ipKeyResolver}"
                     redis-rate-limiter.replenishRate: 2
                     redis-rate-limiter.burstCapacity: 2
+                - name: CircuitBreaker
+                  args:
+                    name: productServiceCircuitBreaker
+                    fallbackUri: forward:/fallback/product
 
             - id: order-service-route
               uri: http://localhost:8081
               predicates:
-                - Path=/orders/**
+                - Path=/api/v1/orders/**
+              filters:
+                  - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
             - id: payment-service-route
               uri: http://localhost:8083
               predicates:
-                - Path=/payments/**
+                - Path=/api/v1/payments/**
+              filters:
+                - RewritePath=/api/v1/(?<segment>.*), /${segment}
