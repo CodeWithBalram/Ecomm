@@ -7,7 +7,13 @@ spring:
             - id: product-service-route
               uri: http://localhost:8082
               predicates:
-                - Path=/products/** ,/categories/**
+                - Path=/products/**,/categories/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"
+                    redis-rate-limiter.replenishRate: 2
+                    redis-rate-limiter.burstCapacity: 2
 
             - id: order-service-route
               uri: http://localhost:8081
