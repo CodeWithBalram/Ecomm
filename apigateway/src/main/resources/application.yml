@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: product-service-route
+              uri: http://localhost:8082
+              predicates:
+                - Path=/products/**,/categories/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"
+                    redis-rate-limiter.replenishRate: 2
+                    redis-rate-limiter.burstCapacity: 2
+
+            - id: order-service-route
+              uri: http://localhost:8081
+              predicates:
+                - Path=/orders/**
+
+            - id: payment-service-route
+              uri: http://localhost:8083
+              predicates:
+                - Path=/payments/**
