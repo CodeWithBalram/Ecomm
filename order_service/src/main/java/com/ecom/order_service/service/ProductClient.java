@@ -16,13 +16,13 @@ public class ProductClient {
     }
 
     public ProductResponseDto getProductName(String productId) {
-        String url = "http://localhost:8080/products/" + productId;
+        String url = "http://product-service/products/" + productId;
         return restTemplate.getForObject(url, ProductResponseDto.class);
     }
 
     public void updateStock(String productId, int quantity) {
 
-        String url = "http://localhost:8080/products/"
+        String url = "http://product-service/products/"
                 + productId
                 + "/stock?stockQuantity="
                 + quantity;
