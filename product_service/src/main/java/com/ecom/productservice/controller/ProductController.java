@@ -4,6 +4,7 @@ import com.ecom.productservice.dto.ProductRequestDto;
 import com.ecom.productservice.dto.ProductResponseDto;
 import com.ecom.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class ProductController
 {
     private final ProductService productService;
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_SELLER')")
     public ProductResponseDto createProduct(@RequestBody ProductRequestDto productRequestDto)
     {
        return productService.createProduct(productRequestDto);
@@ -33,13 +35,15 @@ public class ProductController
     }
 
     @PatchMapping("/{productId}/stock")
-   public ProductResponseDto updateStock(@PathVariable String productId,@RequestParam Integer stockQuantity)
+    @PreAuthorize("hasAuthority('ROLE_SELLER')")
+    public ProductResponseDto updateStock(@PathVariable String productId,@RequestParam Integer stockQuantity)
    {
        return productService.updateStockQuantity(productId,stockQuantity);
    }
 
 
    @DeleteMapping("/{productId}")
+   @PreAuthorize("hasAuthority('ROLE_SELLER')")
    public String deleteProduct(@PathVariable String productId)
    {
       return  productService.deleteProduct(productId);

@@ -4,6 +4,7 @@ import com.ecom.productservice.dto.CategoryRequestDto;
 import com.ecom.productservice.dto.CategoryResponseDto;
 import com.ecom.productservice.dto.ExtendedCategoryResponseDto;
 import com.ecom.productservice.service.CategoryService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CategoryController
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CategoryResponseDto createCategory(@RequestBody CategoryRequestDto categoryRequestDto)
     {
         return categoryService.createCategory(categoryRequestDto);
@@ -37,12 +39,13 @@ public class CategoryController
     {
         return categoryService.getCategoryById(categoryId);
     }
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/{categoryId}/update")
     public CategoryResponseDto updateCategory(@PathVariable String categoryId,@RequestBody CategoryRequestDto categoryRequestDto)
     {
         return categoryService.updateCategory(categoryId,categoryRequestDto);
     }
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{categoryId}")
     public String deleteCategory(@PathVariable String categoryId)
     {
