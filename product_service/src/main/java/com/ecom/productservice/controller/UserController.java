@@ -38,6 +38,8 @@ public class UserController
     @PostMapping("/login")
     public String login(@RequestBody UserDto user)
     {
+
+
         Authentication authentication=authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
