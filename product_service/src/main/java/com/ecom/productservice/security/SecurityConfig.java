@@ -40,7 +40,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/user/login",
-                                "/user/register"
+                                "/user/register","/user/refresh"
+
                         ).permitAll()
 
                         .requestMatchers(
