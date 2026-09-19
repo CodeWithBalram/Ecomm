@@ -16,7 +16,7 @@ public class ProductController
 {
     private final ProductService productService;
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_SELLER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SELLER', 'ROLE_ADMIN')")
     public ProductResponseDto createProduct(@RequestBody ProductRequestDto productRequestDto)
     {
        return productService.createProduct(productRequestDto);
@@ -35,7 +35,7 @@ public class ProductController
     }
 
     @PatchMapping("/{productId}/stock")
-    @PreAuthorize("hasAuthority('ROLE_SELLER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SELLER', 'ROLE_ADMIN')")
     public ProductResponseDto updateStock(@PathVariable String productId,@RequestParam Integer stockQuantity)
    {
        return productService.updateStockQuantity(productId,stockQuantity);

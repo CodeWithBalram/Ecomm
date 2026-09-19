@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -18,13 +19,10 @@ import java.util.function.Function;
 public class JwtUtil
 {
 
-    private static String secretKey;
-    JwtUtil(){
-        SecureRandom random=new SecureRandom();
-        byte[] key =new byte[32];//256bits
-        random.nextBytes(key);
-        secretKey= Base64.getEncoder().encodeToString(key);
-    }
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+
 
     private Key getSignedKey()
     {
